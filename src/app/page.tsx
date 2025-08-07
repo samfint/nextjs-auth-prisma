@@ -1,17 +1,22 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import React from "react";
+import { SignOut } from "@/components/sign-out";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-function HomePage() {
+const Page = async () => {
+  const session = await auth();
+  if (!session) redirect("/sign-in");
+
   return (
-    <div className="container mx-auto px-4 py-8 min-h-screen flex flex-col items-center justify-center">
-      <h1>HomePage</h1>
-      <div>
-        <Button>este es un boton</Button>
+    <>
+      <div className="bg-gray-100 rounded-lg p-4 text-center mb-6">
+        <p className="text-gray-600">Signed in as:</p>
+        <p className="font-medium">{session.user?.email}</p>
+        {/* <img src={session.user?.image} /> */}
       </div>
-      <Input type="email" placeholder="email" />
-    </div>
-  );
-}
 
-export default HomePage;
+      <SignOut />
+    </>
+  );
+};
+
+export default Page;
